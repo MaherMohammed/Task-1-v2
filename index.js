@@ -1,7 +1,16 @@
+const dns = require('node:dns');
+dns.setServers(['8.8.8.8', '1.1.1.1']);
+
 const express = require('express');
 const mongoose = require('mongoose');
+require('dotenv').config();
 const Product = require('./models/product.model.js');
 const productRoutes = require('./routes/product.route.js');
+const bookRoutes = require('./routes/book.route.js');
+const mongoUri = process.env.MONGO_URI;
+
+
+console.log("Mongo URI: %s", mongoUri);
 
 
 const app = express()
@@ -11,6 +20,7 @@ app.use(express.urlencoded({ extended: false }))
 
 //routes
 app.use('/api/products', productRoutes)
+app.use('/api/books', bookRoutes)
 
 
 
@@ -101,7 +111,7 @@ app.get('/', (req, res) => {
  
 
 
-mongoose.connect("mongodb+srv://mahermohammed1097_db_user:lNL4kf5Fl0wOFClo@cluster0.bk5dhmp.mongodb.net/?appName=Cluster0")
+mongoose.connect(mongoUri)
 .then(() => {
   console.log('Connected to MongoDB')
 })
